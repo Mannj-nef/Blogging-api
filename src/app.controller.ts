@@ -1,0 +1,20 @@
+import { Controller, Get } from '@nestjs/common'
+import { AppService } from './app.service'
+
+// import fs from 'fs'
+// import path from 'path'
+const env = process.env.NODE_ENV
+const envFilename = `.env.${env}`
+
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+  @Get()
+  getHello(): string {
+    console.log('envFilename', envFilename)
+
+    return this.appService.getHello()
+    // return fs.existsSync(path.resolve(envFilename)) ? envFilename : 'no env file'
+  }
+}
