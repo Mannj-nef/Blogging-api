@@ -1,34 +1,27 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { MESSAGE } from 'src/shared/constants/message'
 import { LoginDTO, LogoutDTO, RegisterDTO } from './dto'
 import { AuthService } from './auth.service'
 
+@ApiBearerAuth()
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  login(@Body() { email, password }: LoginDTO) {
-    console.log(email, password)
-
-    return {
-      message: MESSAGE.COMMON.SUCCESS('login'),
-      token: 'token'
-    }
+  signIn(@Body() user: LoginDTO) {
+    return this.authService.signIn(user)
   }
 
   @Post('register')
-  register(@Body() {}: RegisterDTO) {
-    return {
-      message: MESSAGE.COMMON.SUCCESS('register'),
-      token: 'token'
-    }
+  register(@Body() user: RegisterDTO) {
+    return this.authService.signUp(user)
   }
 
   @Post('logout')
-  logout(@Body() {}: LogoutDTO) {
+  logOut(@Body() {}: LogoutDTO) {
     return {
       message: MESSAGE.COMMON.SUCCESS('logout')
     }

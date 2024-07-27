@@ -2,11 +2,15 @@ export const MESSAGE = {
   COMMON: {
     SUCCESS: (text: string) => `${text} successfully`,
     NOT_FOUND: (text: string) => `${text} not found`,
-    BAD_REQUEST: (text: string) => `${text} bad request`,
-    INTERNAL_SERVER_ERROR: (text: string) => `${text} internal server error`
+    EXISTS: (text: string) => `${text} already exists`,
+    ACCESS_DENIED: 'access denied'
   },
 
   USER: {
     SOMETHING: 'SOMETHING'
-  },
+  }
+}
+
+export const MESSAGE_NAME = {
+  USER: 'User'
 }
