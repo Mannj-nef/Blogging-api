@@ -1,25 +1,25 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { User } from './user.entity'
-import { Post } from './post.entity'
+import { UserEntity } from './user.entity'
+import { PostEntity } from './post.entity'
 import { BaseEntity } from './base.entity'
 
 @Entity({ name: 'comments' })
-export class Comment extends BaseEntity {
+export class CommentEntity extends BaseEntity {
   @Column('uuid')
-  user_id: string
+  userId: string
 
   @Column('uuid')
-  posts_id: string
+  postsId: string
 
   @Column('uuid', { nullable: true })
-  parent_id?: string
+  parentId?: string
 
   @Column({ type: 'varchar', length: 255 })
   content: string
 
-  @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
-  user: User
+  @ManyToOne(() => UserEntity, (user) => user.comments, { onDelete: 'CASCADE' })
+  user: UserEntity
 
-  @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
-  post: Post
+  @ManyToOne(() => PostEntity, (post) => post.comments, { onDelete: 'CASCADE' })
+  post: PostEntity
 }

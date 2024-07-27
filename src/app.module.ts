@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthModule, UserModule, EmailModule } from './modules'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 
 @Module({
   imports: [
@@ -15,7 +15,11 @@ import { ConfigModule } from '@nestjs/config'
       envFilePath: `.env.${process.env.NODE_ENV || 'example'}`
     }),
 
-    TypeOrmModule.forRoot(config),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: config,
+      inject: [ConfigService]
+    }),
 
     UserModule,
     AuthModule,

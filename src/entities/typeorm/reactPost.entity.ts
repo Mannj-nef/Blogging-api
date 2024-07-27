@@ -1,27 +1,27 @@
 import { REACTION_TYPE } from 'src/shared/constants/enum'
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { User } from './user.entity'
-import { Post } from './post.entity'
+import { UserEntity } from './user.entity'
+import { PostEntity } from './post.entity'
 import { BaseEntity } from './base.entity'
 
 @Entity('react_posts')
-export class ReactPost extends BaseEntity {
+export class ReactPostEntity extends BaseEntity {
   @Column('uuid')
-  user_id: string
+  userId: string
 
   @Column('uuid')
-  posts_id: string
+  postsId: string
 
   @Column({
     type: 'enum',
     enum: REACTION_TYPE,
-    nullable: true,
+    nullable: true
   })
   reaction?: REACTION_TYPE
 
-  @ManyToOne(() => User, (user) => user.reactPosts, { onDelete: 'CASCADE' })
-  user: User
+  @ManyToOne(() => UserEntity, (user) => user.reactPosts, { onDelete: 'CASCADE' })
+  user: UserEntity
 
-  @ManyToOne(() => Post, (post) => post.reactPosts, { onDelete: 'CASCADE' })
-  post: Post
+  @ManyToOne(() => PostEntity, (post) => post.reactPosts, { onDelete: 'CASCADE' })
+  post: PostEntity
 }

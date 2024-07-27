@@ -1,20 +1,20 @@
 import { Column, Entity, OneToMany } from 'typeorm'
-import { ReactPost } from './reactPost.entity'
-import { Post } from './post.entity'
-import { Comment } from './commentPost.entity'
+import { ReactPostEntity } from './reactPost.entity'
+import { PostEntity } from './post.entity'
+import { CommentEntity } from './commentPost.entity'
 import { BaseEntity } from './base.entity'
 import * as bcrypt from 'bcrypt'
 
 @Entity({ name: 'users' })
-export class User extends BaseEntity {
+export class UserEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
-  user_name: string
+  userName: string
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  first_name?: string
+  firstName?: string
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  last_name?: string
+  lastName?: string
 
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string
@@ -23,13 +23,13 @@ export class User extends BaseEntity {
   password: string
 
   @Column({ type: 'varchar', nullable: true })
-  cover_photo?: string
+  coverPhoto?: string
 
   @Column({ type: 'int', nullable: true })
-  phone_number?: number
+  phoneNumber?: number
 
   @Column({ type: 'date', nullable: true })
-  date_of_birth?: Date
+  dateOfBirth?: Date
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   city?: string
@@ -38,19 +38,19 @@ export class User extends BaseEntity {
   biography?: string
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  refresh_token?: string
+  refreshToken?: string
 
   @Column({ type: 'int', nullable: true })
-  forgot_password_otp?: number
+  forgotPasswordOtp?: number
 
-  @OneToMany(() => Post, (post) => post.user, { cascade: true })
-  posts: Post[]
+  @OneToMany(() => PostEntity, (post) => post.user, { cascade: true })
+  posts: PostEntity[]
 
-  @OneToMany(() => ReactPost, (reactPost) => reactPost.user, { cascade: true })
-  reactPosts: ReactPost[]
+  @OneToMany(() => ReactPostEntity, (reactPost) => reactPost.user, { cascade: true })
+  reactPosts: ReactPostEntity[]
 
-  @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
-  comments: Comment[]
+  @OneToMany(() => CommentEntity, (comment) => comment.user, { cascade: true })
+  comments: CommentEntity[]
 
   comparePassword(password: string) {
     return bcrypt.compareSync(password, this.password)

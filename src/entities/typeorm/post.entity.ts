@@ -1,14 +1,14 @@
 import { CATEGORY, POST_STATUS } from 'src/shared/constants/enum'
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { ReactPost } from './reactPost.entity'
-import { User } from './user.entity'
-import { Comment } from './commentPost.entity'
+import { ReactPostEntity } from './reactPost.entity'
+import { UserEntity } from './user.entity'
+import { CommentEntity } from './commentPost.entity'
 import { BaseEntity } from './base.entity'
 
 @Entity({ name: 'posts' })
-export class Post extends BaseEntity {
+export class PostEntity extends BaseEntity {
   @Column('uuid')
-  user_id: string
+  userId: string
 
   @Column({ type: 'varchar', length: 255 })
   title: string
@@ -20,7 +20,7 @@ export class Post extends BaseEntity {
   category: CATEGORY
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  image_thumbnail?: string
+  imageThumbnail?: string
 
   @Column({ type: 'text' })
   content: string
@@ -31,12 +31,12 @@ export class Post extends BaseEntity {
   @Column({ type: 'int', default: 0 })
   popularity: number
 
-  @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
-  user: User
+  @ManyToOne(() => UserEntity, (user) => user.posts, { onDelete: 'CASCADE' })
+  user: UserEntity
 
-  @OneToMany(() => Comment, (comment) => comment.post, { cascade: true })
-  comments: Comment[]
+  @OneToMany(() => CommentEntity, (comment) => comment.post, { cascade: true })
+  comments: CommentEntity[]
 
-  @OneToMany(() => ReactPost, (reactPost) => reactPost.post, { cascade: true })
-  reactPosts: ReactPost[]
+  @OneToMany(() => ReactPostEntity, (reactPost) => reactPost.post, { cascade: true })
+  reactPosts: ReactPostEntity[]
 }
