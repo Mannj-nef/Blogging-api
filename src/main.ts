@@ -10,6 +10,8 @@ async function bootstrap() {
   app.setGlobalPrefix(ENV.PREFIX)
   app.useGlobalPipes(new ValidationPipe())
 
+  console.log({ ENV })
+
   const document = SwaggerModule.createDocument(app, configSwagger)
   SwaggerModule.setup(`${ENV.PREFIX}/docs`, app, document)
 

@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common'
-// import { ConfigModule } from '@nestjs/config'
-// import { config } from './configs/orm.config'
+import { config } from './configs/orm.config'
 
-// import { TypeOrmModule } from '@nestjs/typeorm'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { AuthModule, UserModule } from './modules'
+import { AuthModule, UserModule, EmailModule } from './modules'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { ConfigModule } from '@nestjs/config'
-// import { configuration } from './configs/configuration .config'
 
 @Module({
   imports: [
@@ -17,10 +15,11 @@ import { ConfigModule } from '@nestjs/config'
       envFilePath: `.env.${process.env.NODE_ENV || 'example'}`
     }),
 
-    // TypeOrmModule.forRoot(config),
+    TypeOrmModule.forRoot(config),
 
     UserModule,
-    AuthModule
+    AuthModule,
+    EmailModule
   ],
   controllers: [AppController],
   providers: [AppService]

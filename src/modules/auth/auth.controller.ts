@@ -2,10 +2,13 @@ import { Body, Controller, Post } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { MESSAGE } from 'src/shared/constants/message'
 import { LoginDTO, LogoutDTO, RegisterDTO } from './dto'
+import { AuthService } from './auth.service'
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
+  constructor(private authService: AuthService) {}
+
   @Post('login')
   login(@Body() { email, password }: LoginDTO) {
     console.log(email, password)
@@ -41,9 +44,7 @@ export class AuthController {
 
   @Post('forgot-password')
   forgotPassword() {
-    return {
-      message: MESSAGE.COMMON.SUCCESS('forgot-password')
-    }
+    return this.authService.forgotPassword('manhquan@yopmail.com')
   }
 
   @Post('reset-password')
