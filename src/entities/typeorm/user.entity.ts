@@ -3,7 +3,6 @@ import { ReactPostEntity } from './reactPost.entity'
 import { PostEntity } from './post.entity'
 import { CommentEntity } from './commentPost.entity'
 import { BaseEntity } from './base.entity'
-import * as bcrypt from 'bcrypt'
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {
@@ -51,8 +50,4 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => CommentEntity, (comment) => comment.user, { cascade: true })
   comments: CommentEntity[]
-
-  comparePassword(password: string) {
-    return bcrypt.compareSync(password, this.password)
-  }
 }

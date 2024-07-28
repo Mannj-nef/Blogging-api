@@ -10,7 +10,7 @@ export class ReactPostEntity extends BaseEntity {
   userId: string
 
   @Column('uuid')
-  postsId: string
+  postId: string
 
   @Column({
     type: 'enum',

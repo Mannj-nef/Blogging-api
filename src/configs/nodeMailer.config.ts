@@ -4,12 +4,12 @@ import { ConfigService } from '@nestjs/config'
 export const config = async (configService: ConfigService) => ({
   transport: {
     service: 'gmail',
-    host: configService.get('MAIL_HOST'),
-    port: configService.get('MAIL_PORT'),
+    host: configService.getOrThrow('MAIL_HOST'),
+    port: configService.getOrThrow('MAIL_PORT'),
     secure: false,
     auth: {
-      user: configService.get('MAIL_USER'),
-      pass: configService.get('MAIL_PASSWORD')
+      user: configService.getOrThrow('MAIL_USER'),
+      pass: configService.getOrThrow('MAIL_PASSWORD')
     },
     tls: {
       rejectUnauthorized: false
@@ -17,8 +17,8 @@ export const config = async (configService: ConfigService) => ({
   },
   defaults: {
     from: {
-      name: configService.get('MAIL_FROM_NAME'),
-      address: configService.get('MAIL_USER')
+      name: configService.getOrThrow('MAIL_FROM_NAME'),
+      address: configService.getOrThrow('MAIL_USER')
     }
   },
   template: {

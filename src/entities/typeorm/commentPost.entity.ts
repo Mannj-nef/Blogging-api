@@ -9,7 +9,7 @@ export class CommentEntity extends BaseEntity {
   userId: string
 
   @Column('uuid')
-  postsId: string
+  postId: string
 
   @Column('uuid', { nullable: true })
   parentId?: string
