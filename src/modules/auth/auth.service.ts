@@ -1,24 +1,50 @@
-import { Injectable } from '@nestjs/common'
-import { generateRandomNumber as randomOTP } from 'src/utils/generateRandom'
+import * as bcrypt from 'bcrypt'
+import { ConfigService } from '@nestjs/config'
 import { EmailService } from 'src/modules/email/email.service'
-import { MESSAGE, MESSAGE_NAME } from 'src/shared/constants/message'
+import { ExitsException } from 'src/shared/exceptions/exists.exception'
+import { generateRandomNumber as randomOTP } from 'src/utils/generateRandom'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { JwtService } from '@nestjs/jwt'
 import { LoginDTO, RegisterDTO } from './dto'
+import { MESSAGE, MESSAGE_NAME } from 'src/shared/constants/message'
+import { NotFoundException } from 'src/shared/exceptions/not-found.exception'
 import { Repository } from 'typeorm'
 import { UserEntity } from 'src/entities/typeorm'
-import { InjectRepository } from '@nestjs/typeorm'
-import { ExitsException } from 'src/shared/exceptions/exists.exception'
-import * as bcrypt from 'bcrypt'
+import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private mailerService: EmailService
+    private mailerService: EmailService,
+    private jwtService: JwtService,
+    private configService: ConfigService
   ) {}
 
-  hashData(data: string) {
+  private hashData(data: string) {
     return bcrypt.hashSync(data, 10)
+  }
+
+  private async generateToken(payload: { userId: string; userName: string }) {
+    const accessToken = await this.jwtService.signAsync(payload, {
+      expiresIn: this.configService.getOrThrow('JWT_EXPIRES_ACCESS_IN'),
+      secret: this.configService.getOrThrow('JWT_SECRET_ACCESS_KEY')
+    })
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      expiresIn: this.configService.getOrThrow('JWT_EXPIRES_REFRESH_IN'),
+      secret: this.configService.getOrThrow('JWT_SECRET_REFRESH_KEY')
+    })
+
+    return { accessToken, refreshToken }
+  }
+
+  private async updateRefreshToken(userId: string, refreshToken: string) {
+    const hashedRefreshToken = this.hashData(refreshToken)
+    await this.userRepository.update(userId, {
+      refreshToken: hashedRefreshToken
+    })
   }
 
   async signUp(user: RegisterDTO) {
@@ -28,44 +54,72 @@ export class AuthService {
       throw new ExitsException(MESSAGE_NAME.USER)
     }
 
+    const userId = uuidv4()
+
     const hashPassword = this.hashData(user.password)
 
-    await this.userRepository.save({
-      ...user,
-      password: hashPassword
-    })
+    const [, token] = await Promise.all([
+      this.userRepository.insert({
+        ...user,
+        id: userId,
+        password: hashPassword
+      }),
+      this.generateToken({ userId, userName: user.userName })
+    ])
+
+    await this.updateRefreshToken(userId, token.refreshToken)
 
     return {
       message: MESSAGE.COMMON.SUCCESS('register'),
-      token: 'token'
+      token: token
     }
   }
 
   async signIn({ email, password }: LoginDTO) {
-    console.log(email, password)
+    const user = await this.userRepository.findOneBy({ email })
+
+    if (!user) {
+      throw new NotFoundException(MESSAGE_NAME.USER)
+    }
+
+    const comparePassword = bcrypt.compareSync(password, user.password)
+
+    if (!comparePassword) {
+      throw new HttpException(MESSAGE.AUTH.WRONG_PASSWORD, HttpStatus.UNAUTHORIZED)
+    }
+
+    const token = await this.generateToken({ userId: user.id, userName: user.userName })
+
+    await this.updateRefreshToken(user.id, token.refreshToken)
 
     return {
       message: MESSAGE.COMMON.SUCCESS('login'),
-      token: 'token'
+      token
     }
   }
 
   async forgotPassword(email: string) {
-    console.log(email)
+    const user = await this.userRepository.findOneBy({ email })
 
-    const user = { name: 'quan', email: 'manhquan.05012002@gmail.com' }
+    if (!user) {
+      throw new NotFoundException(MESSAGE_NAME.USER)
+    }
 
     const OTP_reset = randomOTP()
 
-    Promise.all([
-      await this.mailerService.sendResetPassword({
-        recipients: [{ name: user.name, address: user.email }],
+    await Promise.all([
+      this.mailerService.sendResetPassword({
+        recipients: [{ name: user.userName, address: user.email }],
         context: { OTP_reset }
+      }),
+
+      this.userRepository.update(user.id, {
+        forgotPasswordOtp: this.hashData(`${OTP_reset}`)
       })
     ])
 
     return {
-      message: MESSAGE.COMMON.SUCCESS('forgot-password')
+      message: `${MESSAGE.COMMON.SUCCESS('forgot-password')}, ${MESSAGE.AUTH.PLEASE_CHECK_EMAIL}`
     }
   }
 }

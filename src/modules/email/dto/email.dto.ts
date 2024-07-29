@@ -10,6 +10,6 @@ export class EmailDTO {
 
   @ApiProperty()
   context?: {
-    [key: string]: any
+    [key: string]: string | number
   }
 }
