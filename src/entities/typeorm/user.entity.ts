@@ -37,10 +37,10 @@ export class UserEntity extends BaseEntity {
   biography?: string
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  refreshToken?: string
+  refreshToken?: string // hashData
 
-  @Column({ type: 'int', nullable: true })
-  forgotPasswordOtp?: number
+  @Column({ type: 'varchar', nullable: true })
+  forgotPasswordOtp?: string // hashData
 
   @OneToMany(() => PostEntity, (post) => post.user, { cascade: true })
   posts: PostEntity[]
