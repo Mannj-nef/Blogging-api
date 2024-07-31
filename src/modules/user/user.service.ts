@@ -1,4 +1,45 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { UserEntity } from 'src/entities/typeorm'
+import { MESSAGE, MESSAGE_NAME } from 'src/shared/constants/message'
+import { Repository } from 'typeorm'
+import { UpdateUserDTO } from './dto/updateUser.dto'
+import { UserResponse } from 'src/types/userResponse'
 
 @Injectable()
-export class UserService {}
+export class UserService {
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>
+  ) {}
+
+  getMe(user: UserResponse) {
+    return {
+      user: user,
+      message: MESSAGE.COMMON.SUCCESS('Get user')
+    }
+  }
+
+  async updateMe({ userId, userPayload }: { userPayload: UpdateUserDTO; userId: string }) {
+    const user = await this.userRepository.findOneBy({ id: userId })
+
+    if (!user) {
+      throw new NotFoundException(MESSAGE_NAME.USER)
+    }
+
+    await this.userRepository.update(userId, userPayload)
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, forgotPasswordOtp, refreshToken, ...rest } = user
+
+    const updatedUser = {
+      ...rest,
+      ...userPayload
+    }
+
+    return {
+      user: updatedUser,
+      message: MESSAGE.COMMON.SUCCESS('Update user')
+    }
+  }
+}
