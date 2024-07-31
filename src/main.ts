@@ -7,6 +7,7 @@ import { config as configSwagger } from './configs/swagger.config'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  app.enableCors()
   app.setGlobalPrefix(ENV.PREFIX)
   app.useGlobalPipes(new ValidationPipe())
 
