@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { EmailService } from 'src/modules/email/email.service'
 import { ExitsException } from 'src/shared/exceptions/exists.exception'
 import { generateRandomNumber as randomOTP } from 'src/utils/generateRandom'
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { JwtService } from '@nestjs/jwt'
 import { LoginDTO, RegisterDTO } from './dto'
@@ -32,6 +32,7 @@ export class AuthService {
       expiresIn: this.configService.getOrThrow('JWT_EXPIRES_ACCESS_IN'),
       secret: this.configService.getOrThrow('JWT_SECRET_ACCESS_KEY')
     })
+
     const refreshToken = await this.jwtService.signAsync(payload, {
       expiresIn: this.configService.getOrThrow('JWT_EXPIRES_REFRESH_IN'),
       secret: this.configService.getOrThrow('JWT_SECRET_REFRESH_KEY')
@@ -40,8 +41,13 @@ export class AuthService {
     return { accessToken, refreshToken }
   }
 
-  private async updateRefreshToken(userId: string, refreshToken: string) {
-    const hashedRefreshToken = this.hashData(refreshToken)
+  private async updateRefreshToken(userId: string, refreshToken: string | null) {
+    let hashedRefreshToken = refreshToken
+
+    if (!!refreshToken) {
+      hashedRefreshToken = this.hashData(refreshToken)
+    }
+
     await this.userRepository.update(userId, {
       refreshToken: hashedRefreshToken
     })
@@ -120,6 +126,23 @@ export class AuthService {
 
     return {
       message: `${MESSAGE.COMMON.SUCCESS('forgot-password')}, ${MESSAGE.AUTH.PLEASE_CHECK_EMAIL}`
+    }
+  }
+
+  async logout(refreshToken: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(refreshToken, {
+        secret: this.configService.getOrThrow('JWT_SECRET_REFRESH_KEY')
+      })
+
+      const user = await this.userRepository.findOneBy({ id: payload.userId })
+      await this.updateRefreshToken(user.id, null)
+
+      return {
+        message: MESSAGE.COMMON.SUCCESS('logout')
+      }
+    } catch (error) {
+      throw new UnauthorizedException()
     }
   }
 }
