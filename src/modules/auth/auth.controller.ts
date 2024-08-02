@@ -20,10 +20,8 @@ export class AuthController {
   }
 
   @Post('logout')
-  logOut(@Body() {}: LogoutDTO) {
-    return {
-      message: MESSAGE.COMMON.SUCCESS('logout')
-    }
+  logOut(@Body() { refreshToken }: LogoutDTO) {
+    return this.authService.logout(refreshToken)
   }
 
   @Post('refresh-token')
