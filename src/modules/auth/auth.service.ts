@@ -12,6 +12,7 @@ import { NotFoundException } from 'src/shared/exceptions/not-found.exception'
 import { Repository } from 'typeorm'
 import { UserEntity } from 'src/entities/typeorm'
 import { v4 as uuidv4 } from 'uuid'
+import { RefreshTokenDTO } from './dto/refreshToken.dto'
 
 @Injectable()
 export class AuthService {
@@ -70,6 +71,7 @@ export class AuthService {
         id: userId,
         password: hashPassword
       }),
+
       this.generateToken({ userId, userName: user.userName })
     ])
 
@@ -140,6 +142,35 @@ export class AuthService {
 
       return {
         message: MESSAGE.COMMON.SUCCESS('logout')
+      }
+    } catch (error) {
+      throw new UnauthorizedException()
+    }
+  }
+
+  async refreshToken({ refreshToken }: RefreshTokenDTO) {
+    try {
+      const decodeToken = await this.jwtService.verifyAsync(refreshToken, {
+        secret: this.configService.getOrThrow('JWT_SECRET_REFRESH_KEY')
+      })
+
+      const user = await this.userRepository.findOneBy({
+        id: decodeToken.userId
+      })
+
+      const isCompare = bcrypt.compareSync(refreshToken, user.refreshToken)
+
+      if (!isCompare) {
+        throw new UnauthorizedException()
+      }
+
+      const token = await this.generateToken({ userId: user.id, userName: user.userName })
+
+      await this.updateRefreshToken(user.id, token.refreshToken)
+
+      return {
+        token: token,
+        message: MESSAGE.COMMON.SUCCESS('refresh token')
       }
     } catch (error) {
       throw new UnauthorizedException()
