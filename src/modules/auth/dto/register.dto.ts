@@ -17,5 +17,6 @@ export class RegisterDTO {
   confirmPassword: string
 
   @ApiProperty()
+  @IsNotEmpty()
   userName: string
 }

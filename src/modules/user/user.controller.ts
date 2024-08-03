@@ -5,10 +5,10 @@ import { AuthGuard } from 'src/shared/guards/auth.guard'
 import { UpdateUserDTO } from './dto/updateUser.dto'
 import { UserResponse } from 'src/types/userResponse'
 
-@ApiTags('user')
+@ApiTags('users')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}
 
