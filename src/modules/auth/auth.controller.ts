@@ -4,6 +4,7 @@ import { MESSAGE } from 'src/shared/constants/message'
 import { LoginDTO, LogoutDTO, RegisterDTO } from './dto'
 import { AuthService } from './auth.service'
 import { ForgotPasswordDTO } from './dto/forgotPassword.dto'
+import { RefreshTokenDTO } from './dto/refreshToken.dto'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -26,11 +27,8 @@ export class AuthController {
   }
 
   @Post('refresh-token')
-  refreshToken() {
-    return {
-      message: MESSAGE.COMMON.SUCCESS('refresh-token'),
-      token: 'token'
-    }
+  refreshToken(@Body() { refreshToken }: RefreshTokenDTO) {
+    return this.authService.refreshToken({ refreshToken })
   }
 
   @Post('forgot-password')
