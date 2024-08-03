@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger'
 import { MESSAGE } from 'src/shared/constants/message'
 import { LoginDTO, LogoutDTO, RegisterDTO } from './dto'
 import { AuthService } from './auth.service'
+import { ForgotPasswordDTO } from './dto/forgotPassword.dto'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -33,7 +34,7 @@ export class AuthController {
   }
 
   @Post('forgot-password')
-  forgotPassword(@Body() { email }: { email: string }) {
+  forgotPassword(@Body() { email }: ForgotPasswordDTO) {
     return this.authService.forgotPassword(email)
   }
 
