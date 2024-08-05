@@ -5,8 +5,8 @@ import { AuthGuard } from 'src/shared/guards/auth.guard'
 import { PostService } from './post.service'
 import { UserResponse } from 'src/types/userResponse'
 
-@ApiTags('post')
-@Controller('post')
+@ApiTags('posts')
+@Controller('posts')
 export class PostController {
   constructor(private postService: PostService) {}
 
