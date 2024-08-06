@@ -22,5 +22,6 @@ export const MESSAGE = {
 }
 
 export const MESSAGE_NAME = {
-  USER: 'User'
+  USER: 'User',
+  POST: 'Posts'
 }

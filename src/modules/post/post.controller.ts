@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Patch, Post, Request, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common'
 import { CreatePostDTO } from './dto/createPost.dto'
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from 'src/shared/guards/auth.guard'
@@ -9,6 +9,14 @@ import { UserResponse } from 'src/types/userResponse'
 @Controller('posts')
 export class PostController {
   constructor(private postService: PostService) {}
+
+  // @ApiBearerAuth()
+  // @UseGuards(AuthGuard)
+  @ApiParam({ name: 'id' })
+  @Get(':id')
+  getPostDetail(@Param() param: { id: string }) {
+    return this.postService.getPostDetail({ id: param.id })
+  }
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard)

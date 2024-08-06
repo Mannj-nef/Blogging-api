@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { PostEntity, ReactPostEntity, CommentEntity } from 'src/entities/typeorm'
 import { Repository } from 'typeorm'
 import { CreatePostDTO } from './dto/createPost.dto'
-import { MESSAGE } from 'src/shared/constants/message'
+import { MESSAGE, MESSAGE_NAME } from 'src/shared/constants/message'
 
 @Injectable()
 export class PostService {
@@ -15,6 +15,18 @@ export class PostService {
     @InjectRepository(CommentEntity)
     private readonly commentRepository: Repository<CommentEntity>
   ) {}
+
+  async getPostDetail({ id }: { id: string }) {
+    const post = await this.postRepository.findOneBy({ id })
+
+    if (!post) {
+      throw new NotFoundException(MESSAGE_NAME.POST)
+    }
+    console.log({ post })
+    return {
+      message: MESSAGE.COMMON.SUCCESS('Get post detail')
+    }
+  }
 
   async createPost({ payload, userId }: { payload: CreatePostDTO; userId: string }) {
     await this.postRepository.save({
@@ -36,9 +48,7 @@ export class PostService {
     const post = await this.postRepository.findOneBy({ id: postId, userId: userId })
 
     if (!post) {
-      return {
-        message: MESSAGE.COMMON.NOT_FOUND('Post')
-      }
+      throw new NotFoundException(MESSAGE_NAME.POST)
     }
 
     await this.postRepository.update(post.id, {
@@ -59,9 +69,7 @@ export class PostService {
     const post = await this.postRepository.findOneBy({ id: postId, userId })
 
     if (!post) {
-      return {
-        message: MESSAGE.COMMON.NOT_FOUND('Post')
-      }
+      throw new NotFoundException(MESSAGE_NAME.POST)
     }
 
     await this.postRepository.delete(post.id)
