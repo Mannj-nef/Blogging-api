@@ -31,4 +31,27 @@ export class PostService {
       message: MESSAGE.COMMON.SUCCESS('Create post')
     }
   }
+
+  async updatePostDTO({ payload, postId }: { payload: CreatePostDTO; postId: string }) {
+    const post = await this.postRepository.findOneBy({ id: postId })
+
+    if (!post) {
+      return {
+        message: MESSAGE.COMMON.NOT_FOUND('Post')
+      }
+    }
+
+    await this.postRepository.update(post.id, {
+      title: payload.title,
+      slug: payload.slug,
+      category: payload.category,
+      imageThumbnail: payload.imageThumbnail,
+      content: payload.content,
+      status: payload.status
+    })
+
+    return {
+      message: MESSAGE.COMMON.SUCCESS('Update post')
+    }
+  }
 }
