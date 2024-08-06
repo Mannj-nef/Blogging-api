@@ -16,7 +16,8 @@ export const MESSAGE = {
     WRONG_OTP: 'otp is incorrect',
     WRONG_TOKEN: 'token is incorrect',
     NOT_LOGIN: 'you are not logged in',
-    PLEASE_CHECK_EMAIL: 'please check your email to get otp code'
+    PLEASE_CHECK_EMAIL: 'please check your email to get otp code',
+    PASSWORD_NOT_MATCH: 'password not match'
   }
 }
 

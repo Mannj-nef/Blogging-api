@@ -10,6 +10,7 @@ import { LoginDTO, RegisterDTO } from './dto'
 import { MESSAGE, MESSAGE_NAME } from 'src/shared/constants/message'
 import { NotFoundException } from 'src/shared/exceptions/not-found.exception'
 import { Repository } from 'typeorm'
+import { ResetPasswordDTO } from './dto/resetPassword.dto'
 import { UserEntity } from 'src/entities/typeorm'
 import { v4 as uuidv4 } from 'uuid'
 import { RefreshTokenDTO } from './dto/refreshToken.dto'
@@ -113,7 +114,7 @@ export class AuthService {
       throw new NotFoundException(MESSAGE_NAME.USER)
     }
 
-    const OTP_reset = randomOTP()
+    const OTP_reset = `${randomOTP()}`
 
     await Promise.all([
       this.mailerService.sendResetPassword({
@@ -122,7 +123,7 @@ export class AuthService {
       }),
 
       this.userRepository.update(user.id, {
-        forgotPasswordOtp: this.hashData(`${OTP_reset}`)
+        forgotPasswordOtp: this.hashData(OTP_reset)
       })
     ])
 
@@ -174,6 +175,40 @@ export class AuthService {
       }
     } catch (error) {
       throw new UnauthorizedException()
+    }
+  }
+
+  async resetPassword(payload: ResetPasswordDTO) {
+    if (payload.password !== payload.confirmPassword) {
+      throw new HttpException(MESSAGE.AUTH.PASSWORD_NOT_MATCH, HttpStatus.BAD_REQUEST)
+    }
+
+    const user = await this.userRepository.findOneBy({ email: payload.email })
+
+    if (!user) {
+      throw new NotFoundException(MESSAGE_NAME.USER)
+    }
+
+    const compareOtp = bcrypt.compareSync(payload.otp, user.forgotPasswordOtp)
+
+    if (!compareOtp) {
+      throw new HttpException(MESSAGE.AUTH.WRONG_OTP, HttpStatus.UNAUTHORIZED)
+    }
+
+    const hashPassword = this.hashData(payload.password)
+
+    const [, token] = await Promise.all([
+      this.userRepository.update(user.id, {
+        password: hashPassword,
+        forgotPasswordOtp: null
+      }),
+
+      this.generateToken({ userId: user.id, userName: user.userName })
+    ])
+
+    return {
+      message: MESSAGE.COMMON.SUCCESS('reset password'),
+      token
     }
   }
 }

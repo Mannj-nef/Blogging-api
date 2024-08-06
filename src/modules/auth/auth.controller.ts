@@ -1,10 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { MESSAGE } from 'src/shared/constants/message'
 import { LoginDTO, LogoutDTO, RegisterDTO } from './dto'
 import { AuthService } from './auth.service'
 import { ForgotPasswordDTO } from './dto/forgotPassword.dto'
 import { RefreshTokenDTO } from './dto/refreshToken.dto'
+import { ResetPasswordDTO } from './dto/resetPassword.dto'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -37,10 +37,7 @@ export class AuthController {
   }
 
   @Post('reset-password')
-  resetPassword() {
-    return {
-      message: MESSAGE.COMMON.SUCCESS('reset-password'),
-      token: 'token'
-    }
+  resetPassword(@Body() payload: ResetPasswordDTO) {
+    return this.authService.resetPassword(payload)
   }
 }
