@@ -1,21 +1,36 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common'
 import { CreatePostDTO } from './dto/createPost.dto'
-import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from 'src/shared/guards/auth.guard'
 import { PostService } from './post.service'
 import { UserResponse } from 'src/types/userResponse'
+import { GetPostDTO } from './dto/getPost.dto.'
 
 @ApiTags('posts')
 @Controller('posts')
 export class PostController {
   constructor(private postService: PostService) {}
 
-  // @ApiBearerAuth()
-  // @UseGuards(AuthGuard)
+  @Get()
+  @ApiQuery({ name: 'title', required: false })
+  @ApiQuery({ name: 'trending', required: false })
+  @ApiQuery({ name: 'isLatest', required: false })
+  @ApiQuery({ name: 'category', required: false })
+  getPosts(@Query() param: GetPostDTO) {
+    return this.postService.getPosts(param)
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @Get('user/:id')
+  getYourPosts(@Request() req: Request & { user: UserResponse }) {
+    return this.postService.getYourPosts({ userId: req.user.id })
+  }
+
   @ApiParam({ name: 'id' })
   @Get(':id')
-  getPostDetail(@Param() param: { id: string }) {
-    return this.postService.getPostDetail({ id: param.id })
+  getPostDetail(@Param() param: { id: string }, @Query() query: { userId?: string }) {
+    return this.postService.getPostDetail({ id: param.id, userId: query.userId })
   }
 
   @ApiBearerAuth()
