@@ -41,6 +41,9 @@ $ npm run start
 # watch mode
 $ npm run start:dev
 
+# watch mode win
+$ npm run start:dev_for_win
+
 # production mode
 $ npm run start:prod
 ```
