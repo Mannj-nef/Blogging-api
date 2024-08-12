@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm'
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
 import { UserEntity } from './user.entity'
 import { PostEntity } from './post.entity'
 import { BaseEntity } from './base.entity'
@@ -12,7 +12,7 @@ export class CommentEntity extends BaseEntity {
   postId: string
 
   @Column('uuid', { nullable: true })
-  parentId?: string
+  parentId: string
 
   @Column({ type: 'varchar', length: 255 })
   content: string
@@ -22,4 +22,7 @@ export class CommentEntity extends BaseEntity {
 
   @ManyToOne(() => PostEntity, (post) => post.comments, { onDelete: 'CASCADE' })
   post: PostEntity
+
+  @OneToMany(() => CommentEntity, (comment) => comment.parentId, { onDelete: 'CASCADE' })
+  replies: CommentEntity[]
 }

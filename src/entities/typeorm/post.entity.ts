@@ -1,5 +1,5 @@
 import { CATEGORY, POST_STATUS } from 'src/shared/constants/enum'
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 import { ReactPostEntity } from './reactPost.entity'
 import { UserEntity } from './user.entity'
 import { CommentEntity } from './commentPost.entity'
@@ -32,11 +32,12 @@ export class PostEntity extends BaseEntity {
   popularity: number
 
   @ManyToOne(() => UserEntity, (user) => user.posts, { onDelete: 'CASCADE' })
-  user: UserEntity
+  user: Pick<UserEntity, 'id' | 'email' | 'firstName' | 'lastName' | 'coverPhoto' | 'userName'>
 
   @OneToMany(() => CommentEntity, (comment) => comment.post, { cascade: true })
   comments: CommentEntity[]
 
   @OneToMany(() => ReactPostEntity, (reactPost) => reactPost.post, { cascade: true })
+  @JoinColumn([{ name: 'reactPostId', referencedColumnName: 'id' }])
   reactPosts: ReactPostEntity[]
 }

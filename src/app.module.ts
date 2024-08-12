@@ -8,6 +8,8 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { PostModule } from './modules/post/post.module'
+import { ReactionModule } from './modules/reaction/reaction.module'
+import { CommentModule } from './modules/comment/comment.module';
 
 @Module({
   imports: [
@@ -25,7 +27,9 @@ import { PostModule } from './modules/post/post.module'
     UserModule,
     AuthModule,
     EmailModule,
-    PostModule
+    PostModule,
+    ReactionModule,
+    CommentModule
   ],
   controllers: [AppController],
   providers: [AppService]
