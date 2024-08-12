@@ -15,6 +15,5 @@ export class AppController {
     console.log('envFilename', envFilename)
 
     return this.appService.getHello()
-    // return fs.existsSync(path.resolve(envFilename)) ? envFilename : 'no env file'
   }
 }
