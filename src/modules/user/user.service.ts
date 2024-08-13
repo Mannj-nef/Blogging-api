@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UserEntity } from 'src/entities/typeorm'
 import { MESSAGE, MESSAGE_NAME } from 'src/shared/constants/message'
 import { Repository } from 'typeorm'
 import { UpdateUserDTO } from './dto/updateUser.dto'
 import { UserResponse } from 'src/types/userResponse'
+import { calculateAge } from 'src/utils/generateRandom'
 
 @Injectable()
 export class UserService {
@@ -25,6 +26,16 @@ export class UserService {
 
     if (!user) {
       throw new NotFoundException(MESSAGE_NAME.USER)
+    }
+
+    if (userPayload.dateOfBirth) {
+      const ageUser = calculateAge(new Date(userPayload.dateOfBirth))
+
+      if (ageUser < 6) {
+        throw new HttpException(MESSAGE.USER.MINIMUM_AGE, HttpStatus.BAD_REQUEST)
+      }
+    } else {
+      userPayload.dateOfBirth = null
     }
 
     await this.userRepository.update(userId, userPayload)

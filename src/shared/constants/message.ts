@@ -8,7 +8,8 @@ export const MESSAGE = {
   },
 
   USER: {
-    SOMETHING: 'SOMETHING'
+    SOMETHING: 'SOMETHING',
+    MINIMUM_AGE: 'Minimum age 6 years old'
   },
 
   AUTH: {

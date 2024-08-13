@@ -81,7 +81,7 @@ export class PostService {
       }
     }
 
-    const posts = await this.postRepository.find({
+    const [posts, total] = await this.postRepository.findAndCount({
       where: {
         category,
         title: title ? ILike(`%${title}%`) : undefined,
@@ -109,6 +109,9 @@ export class PostService {
 
     return {
       message: MESSAGE.COMMON.SUCCESS('Get posts'),
+      currentPage: page,
+      total: total,
+      totalPage: total,
       posts
     }
   }
@@ -153,7 +156,7 @@ export class PostService {
       await this.reactPostRepository.count({ where: { postId: post.id } }),
       await this.reactPostRepository.findOne({ where: { postId: post.id, userId } }),
 
-      await this.postRepository.update(id, { popularity: post.popularity + 1 })
+      await this.postRepository.update(id, { popularity: userId ? post.popularity + 1 : post.popularity })
     ])
 
     const newPostDetail = {
@@ -161,7 +164,7 @@ export class PostService {
       commentTotal: totalComment,
       reaction: {
         total: totalReaction,
-        type: reactionType ? reactionType.reaction : null
+        type: reactionType && userId ? reactionType.reaction : null
       }
     }
 
