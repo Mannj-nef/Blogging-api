@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Param, Post, Request, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from 'src/guards/auth.guard'
-import { ReactionService } from './reaction.service'
+import { ReactionService } from './reactions.service'
 import { ReactPostDTO, UnReactPostDTO } from './dto'
 import { UserResponse } from 'src/types/user-response'
 

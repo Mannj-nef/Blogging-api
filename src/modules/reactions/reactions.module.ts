@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { ReactionController } from './reaction.controller'
-import { ReactionService } from './reaction.service'
+import { ReactionController } from './reactions.controller'
+import { ReactionService } from './reactions.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { PostEntity, ReactPostEntity, UserEntity } from 'src/entities/typeorm'
 

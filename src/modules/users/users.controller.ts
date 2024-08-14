@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Patch, Request, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { UserService } from './user.service'
+import { UserService } from './users.service'
 import { AuthGuard } from 'src/guards/auth.guard'
 import { UpdateUserDTO } from './dto'
 import { UserResponse } from 'src/types/user-response'

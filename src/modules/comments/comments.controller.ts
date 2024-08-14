@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from 'src/guards/auth.guard'
-import { CommentService } from './comment.service'
+import { CommentService } from './comments.service'
 import { UserResponse } from 'src/types/user-response'
 import { CreateCommentDTO, GetCommentDTO, UpdateCommentDTO } from './dto'
 
