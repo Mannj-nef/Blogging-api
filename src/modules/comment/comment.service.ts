@@ -2,11 +2,9 @@ import { HttpException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CommentEntity, PostEntity } from 'src/entities/typeorm'
 import { Repository } from 'typeorm'
-import { GetCommentDTO } from './dto/getComment.dot'
-import { NotFoundException } from 'src/shared/exceptions/not-found.exception'
-import { MESSAGE, MESSAGE_NAME } from 'src/shared/constants/message'
-import { CreateCommentDTO } from './dto/createComment.dto'
-import { UpdateCommentDTO } from './dto/updateComment.dto'
+import { GetCommentDTO, UpdateCommentDTO, CreateCommentDTO } from './dto'
+import { NotFoundException } from 'src/exceptions/not-found.exception'
+import { MESSAGE, MESSAGE_NAME } from 'src/constants/message'
 
 @Injectable()
 export class CommentService {

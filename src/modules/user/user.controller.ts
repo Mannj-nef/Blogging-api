@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Patch, Request, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { UserService } from './user.service'
-import { AuthGuard } from 'src/shared/guards/auth.guard'
-import { UpdateUserDTO } from './dto/updateUser.dto'
-import { UserResponse } from 'src/types/userResponse'
+import { AuthGuard } from 'src/guards/auth.guard'
+import { UpdateUserDTO } from './dto'
+import { UserResponse } from 'src/types/user-response'
 
 @ApiTags('users')
 @ApiBearerAuth()

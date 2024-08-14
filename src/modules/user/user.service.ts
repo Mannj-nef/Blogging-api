@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UserEntity } from 'src/entities/typeorm'
-import { MESSAGE, MESSAGE_NAME } from 'src/shared/constants/message'
+import { MESSAGE, MESSAGE_NAME } from 'src/constants/message'
 import { Repository } from 'typeorm'
-import { UpdateUserDTO } from './dto/updateUser.dto'
-import { UserResponse } from 'src/types/userResponse'
-import { calculateAge } from 'src/utils/generateRandom'
+import { UpdateUserDTO } from './dto'
+import { UserResponse } from 'src/types/user-response'
+import { calculateAge } from 'src/utils/generate-random'
 
 @Injectable()
 export class UserService {

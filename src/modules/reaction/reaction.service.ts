@@ -1,10 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { ReactPostDTO } from './dto/reactPost.dto'
-import { MESSAGE, MESSAGE_NAME } from 'src/shared/constants/message'
+import { ReactPostDTO, UnReactPostDTO } from './dto'
+import { MESSAGE, MESSAGE_NAME } from 'src/constants/message'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { PostEntity, ReactPostEntity } from 'src/entities/typeorm'
-import { UnReactPostDTO } from './dto/unReactPost.dto'
 
 @Injectable()
 export class ReactionService {

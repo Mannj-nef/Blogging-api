@@ -1,14 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { AuthGuard } from 'src/shared/guards/auth.guard'
+import { AuthGuard } from 'src/guards/auth.guard'
 import { CommentService } from './comment.service'
-import { GetCommentDTO } from './dto/getComment.dot'
-import { CreateCommentDTO } from './dto/createComment.dto'
-import { UserResponse } from 'src/types/userResponse'
-import { UpdateCommentDTO } from './dto/updateComment.dto'
+import { UserResponse } from 'src/types/user-response'
+import { CreateCommentDTO, GetCommentDTO, UpdateCommentDTO } from './dto'
 
-@ApiTags('comment')
-@Controller('comment')
+@ApiTags('comments')
+@Controller('comments')
 export class CommentController {
   constructor(private commentService: CommentService) {}
 

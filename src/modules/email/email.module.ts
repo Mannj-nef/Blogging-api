@@ -3,7 +3,7 @@ import { EmailController } from './email.controller'
 import { EmailService } from './email.service'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { ConfigService } from '@nestjs/config'
-import { config } from 'src/configs/nodeMailer.config'
+import { config } from 'src/configs/node-mailer.config'
 
 @Module({
   imports: [

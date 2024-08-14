@@ -3,13 +3,10 @@ import { config } from './configs/orm.config'
 
 import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { AuthModule, UserModule, EmailModule } from './modules'
+import { AuthModule, UserModule, EmailModule, CommentModule, ReactionModule, PostModule } from './modules'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { PostModule } from './modules/post/post.module'
-import { ReactionModule } from './modules/reaction/reaction.module'
-import { CommentModule } from './modules/comment/comment.module'
 
 @Module({
   imports: [

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsEnum, IsNotEmpty, IsUUID } from 'class-validator'
-import { REACTION_TYPE } from 'src/shared/constants/enum'
+import { REACTION_TYPE } from 'src/constants/enum'
 
 export class ReactPostDTO {
   @ApiProperty()

@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
-import { ENV } from './shared/constants/env'
+import { ENV } from './constants/env'
 import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule } from '@nestjs/swagger'
 import { config as configSwagger } from './configs/swagger.config'

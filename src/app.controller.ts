@@ -1,8 +1,6 @@
 import { Controller, Get } from '@nestjs/common'
 import { AppService } from './app.service'
 
-// import fs from 'fs'
-// import path from 'path'
 const env = process.env.NODE_ENV
 const envFilename = `.env.${env}`
 

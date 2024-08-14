@@ -1,8 +1,8 @@
-import { CATEGORY, POST_STATUS } from 'src/shared/constants/enum'
+import { CATEGORY, POST_STATUS } from 'src/constants/enum'
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { ReactPostEntity } from './reactPost.entity'
+import { ReactPostEntity } from './react-post.entity'
 import { UserEntity } from './user.entity'
-import { CommentEntity } from './commentPost.entity'
+import { CommentEntity } from './comment-post.entity'
 import { BaseEntity } from './base.entity'
 
 @Entity({ name: 'posts' })

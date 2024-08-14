@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm'
-import { ReactPostEntity } from './reactPost.entity'
+import { ReactPostEntity } from './react-post.entity'
 import { PostEntity } from './post.entity'
-import { CommentEntity } from './commentPost.entity'
+import { CommentEntity } from './comment-post.entity'
 import { BaseEntity } from './base.entity'
 
 @Entity({ name: 'users' })

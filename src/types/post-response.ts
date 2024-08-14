@@ -1,4 +1,4 @@
-import { CATEGORY, POST_STATUS, REACTION_TYPE } from 'src/shared/constants/enum'
+import { CATEGORY, POST_STATUS, REACTION_TYPE } from 'src/constants/enum'
 
 export type PostDetailResponse = {
   id: string

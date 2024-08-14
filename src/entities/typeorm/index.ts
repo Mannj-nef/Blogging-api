@@ -1,4 +1,4 @@
 export * from './post.entity'
 export * from './user.entity'
-export * from './reactPost.entity'
-export * from './commentPost.entity'
+export * from './react-post.entity'
+export * from './comment-post.entity'

@@ -1,10 +1,10 @@
-import { REACTION_TYPE } from 'src/shared/constants/enum'
+import { REACTION_TYPE } from 'src/constants/enum'
 import { Column, Entity, ManyToOne } from 'typeorm'
 import { UserEntity } from './user.entity'
 import { PostEntity } from './post.entity'
 import { BaseEntity } from './base.entity'
 
-@Entity('react_posts')
+@Entity({ name: 'react_posts' })
 export class ReactPostEntity extends BaseEntity {
   @Column('uuid')
   userId: string

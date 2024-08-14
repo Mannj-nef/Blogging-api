@@ -1,13 +1,12 @@
 import { Body, Controller, Delete, Param, Post, Request, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { AuthGuard } from 'src/shared/guards/auth.guard'
+import { AuthGuard } from 'src/guards/auth.guard'
 import { ReactionService } from './reaction.service'
-import { ReactPostDTO } from './dto/reactPost.dto'
-import { UserResponse } from 'src/types/userResponse'
-import { UnReactPostDTO } from './dto/unReactPost.dto'
+import { ReactPostDTO, UnReactPostDTO } from './dto'
+import { UserResponse } from 'src/types/user-response'
 
-@ApiTags('Reaction')
-@Controller('reaction')
+@ApiTags('reactions')
+@Controller('reactions')
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class ReactionController {

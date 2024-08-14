@@ -1,10 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common'
-import { CreatePostDTO } from './dto/createPost.dto'
+import { CreatePostDTO, GetPostDTO } from './dto'
 import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
-import { AuthGuard } from 'src/shared/guards/auth.guard'
+import { AuthGuard } from 'src/guards/auth.guard'
 import { PostService } from './post.service'
-import { UserResponse } from 'src/types/userResponse'
-import { GetPostDTO } from './dto/getPost.dto.'
+import { UserResponse } from 'src/types/user-response'
 
 @ApiTags('posts')
 @Controller('posts')

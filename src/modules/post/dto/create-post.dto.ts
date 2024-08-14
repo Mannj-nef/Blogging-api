@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator'
-import { CATEGORY, POST_STATUS } from 'src/shared/constants/enum'
+import { CATEGORY, POST_STATUS } from 'src/constants/enum'
 
 export class CreatePostDTO {
   @ApiProperty({ example: 'post title' })

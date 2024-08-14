@@ -1,6 +1,6 @@
 import { MailerService } from '@nestjs-modules/mailer'
 import { Injectable } from '@nestjs/common'
-import { EmailDTO } from './dto/email.dto'
+import { EmailDTO } from './dto'
 
 @Injectable()
 export class EmailService {

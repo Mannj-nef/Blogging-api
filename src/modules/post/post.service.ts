@@ -2,10 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { PostEntity, ReactPostEntity, CommentEntity } from 'src/entities/typeorm'
 import { ILike, Repository } from 'typeorm'
-import { CreatePostDTO } from './dto/createPost.dto'
-import { MESSAGE, MESSAGE_NAME } from 'src/shared/constants/message'
-import { GetPostDTO } from './dto/getPost.dto.'
-import { POST_STATUS } from 'src/shared/constants/enum'
+import { CreatePostDTO, GetPostDTO } from './dto'
+import { MESSAGE, MESSAGE_NAME } from 'src/constants/message'
+
+import { POST_STATUS } from 'src/constants/enum'
 
 @Injectable()
 export class PostService {

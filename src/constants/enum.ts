@@ -1,10 +1,10 @@
 export enum USER_ROLE {
-  USER = 'user',
+  USER = 'user'
 }
 
 export enum POST_STATUS {
   PUBLIC = 'public',
-  PRIVATE = 'private',
+  PRIVATE = 'private'
 }
 
 export enum CATEGORY {
@@ -12,7 +12,7 @@ export enum CATEGORY {
   BE = 'back-end',
   MOBILE = 'mobile',
   GAME = 'game',
-  FULL = 'full-stack',
+  FULL = 'full-stack'
 }
 
 export enum REACTION_TYPE {
@@ -22,5 +22,5 @@ export enum REACTION_TYPE {
   HAHA = 'haha',
   WOW = 'wow',
   SAD = 'sad',
-  ANGRY = 'angry',
+  ANGRY = 'angry'
 }
